@@ -1,3 +1,22 @@
+(define (square x)
+  (* x x))
+
+(define (average x y)
+  (/ (+ x y) 2))
+
+(define (improve guess x)
+  (average guess (/ x guess)))
+
+(define (good-enough? guess x)
+  (< (abs (- (square guess) 
+             x)) 
+     0.001))
+
+(define (sqrt-iter guess x)
+  (if (good-enough? guess x)
+      guess
+      (sqrt-iter (improve guess x) x)))
+
 ; Exercise 1.6: Alyssa P. Hacker doesn’t see why if needs to
 ; be provided as a special form. “Why can’t I just define it as
 ; an ordinary procedure in terms of cond?” she asks. Alyssa’s
@@ -18,7 +37,7 @@
 ; Delighted, Alyssa uses new-if to rewrite the square-root
 ; program:
 
-(define (sqrt-iter guess x)
+(define (sqrt-iter-2 guess x)                   ; renamed from sqrt-iter to sqrt-iter-2
   (new-if (good-enough? guess x)
           guess
           (sqrt-iter (improve guess x) x)))
@@ -26,3 +45,14 @@
 ; What happens when Alyssa attempts to use this to compute
 ; square roots? Explain.
 
+; Using the applicative order evaluation the interpreter will evalute all 3
+; arguments of the "new-if" procedure, including the last one which should 
+; only be evaluated if the expression provided on the first argument is false.
+; This will lead to a infinite loop since the the last argument is an expression
+; that calls the "sqrt-iter" procedure itself.
+
+; I think this could be resolved if the two last arguments were references
+; to procedures as data, which would be evalutaed like so. I think in later 
+; lessons it will be taught a way to do so, and, of course, along with a way 
+; to "call" the procedures, prompting the interpreter to actually evaluate the 
+; expressions they represent.
