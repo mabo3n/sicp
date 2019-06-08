@@ -19,3 +19,16 @@
 ; is using normal or applicative order: The predicate expression 
 ; is evaluated first, and the result determines whether to 
 ; evaluate the consequent or the alternative expression.)
+
+; If the interpreter is using applicative-order evaluation, the
+; execution will enter on an infinite loop and will return nothing at all. 
+; As in applicative-order evaluation the operands are evaluated first, 
+; before evaluating the body of the "test" procedure, the interpreter 
+; will try to evaluate both arguments, including "y", which will lead to a
+; infinite loop because of it is a procedure that calls itself ("p").
+; 
+; Using normal-order evaluation, the expression carried by the parameter
+; "y" would only be evaluated when needed. In the example, the procedure was
+; called with "x" being 0, so the predicate of the "if" procedure inside the body
+; of the "test" procedure will be evaluated to true, and 0 will be [successfully] 
+; returned with "y" not even being evaluated.
