@@ -99,3 +99,21 @@
 ; new version, since we're not squaring the guess in the 
 ; "good-enough?" test anymore. But the "very large number problem" 
 ; still persists, it just got more unlikely to face it.
+
+
+; ------------- Corrections -------------
+; For large numbers:
+; 
+; On the other hand, for very large values of the radicand, 
+; the machine precision is unable to represent small differences 
+; between large numbers. The algorithm might never terminate 
+; because the square of the best guess will not be within 0.001 
+; of the radicand and trying to improve it will keep on yielding 
+; the same guess [i.e. (improve guess x) will equal guess]. 
+; Try (sqrt 1000000000000) [that's with 12 zeroes], then try 
+; (sqrt 10000000000000) [13 zeroes]. On my 64-bit intel machine, 
+; the 12 zeroes yields an answer almost immediately whereas the 
+; 13 zeroes enters an endless loop. The algorithm gets stuck 
+; because (improve guess x) keeps on yielding 4472135.954999579 
+; but (good-enough? guess x) keeps returning #f.
+
