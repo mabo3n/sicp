@@ -28,3 +28,4 @@
       136
       ```
 
+In general, an iterative process is one whose state can be summarized by a fixed number of *state variables*, together with a fixed rule that describes how the state variables should be updated as the process moves from state to state and an (optional) end test that specifies conditions under which the process should terminate. In computing n!, the number of steps required grows linearly with *n*. Such a process is called a *linear iterative process*.
