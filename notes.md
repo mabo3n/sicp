@@ -28,4 +28,19 @@
       136
       ```
 
-In general, an iterative process is one whose state can be summarized by a fixed number of *state variables*, together with a fixed rule that describes how the state variables should be updated as the process moves from state to state and an (optional) end test that specifies conditions under which the process should terminate. In computing n!, the number of steps required grows linearly with *n*. Such a process is called a *linear iterative process*.
+> In general, an iterative process is one whose state can be summarized by a fixed number of *state variables*, together with a fixed rule that describes how the state variables should be updated as the process moves from state to state and an (optional) end test that specifies conditions under which the process should terminate. In computing n!, the number of steps required grows linearly with *n*. Such a process is called a *linear iterative process*.
+
+> In contrasting iteration and recursion, we must be careful not to
+confuse the notion of a recursive *process* with the notion of a recursive
+*procedure*. When we describe a procedure as recursive, we are referring
+to the syntactic fact that the procedure definition refers (either directly
+or indirectly) to the procedure itself. But when we describe a process
+as following a pattern that is, say, linearly recursive, we are speaking
+about how the process evolves, not about the syntax of how a procedure
+is written. It may seem disturbing that we refer to a recursive procedure
+such as *fact-iter* as generating an iterative process.
+
+Iterative *procedure*: do not calls itself;
+Recursive *procedure*: directly or indirectly calls itself (syntactic wise);
+Iterative *process*: its state can be summarized by a fixed number of variables + a rule for changing the state (and optionally + and "end" test condition);
+Recursive *process*: Opposite of above. It keeps track of "hidden" chained information to be computed later on.
