@@ -28,6 +28,8 @@
       136
       ```
 
+### Iteration x recursion
+
 > In general, an iterative process is one whose state can be summarized by a fixed number of *state variables*, together with a fixed rule that describes how the state variables should be updated as the process moves from state to state and an (optional) end test that specifies conditions under which the process should terminate. In computing n!, the number of steps required grows linearly with *n*. Such a process is called a *linear iterative process*.
 
 > In contrasting iteration and recursion, we must be careful not to
@@ -44,3 +46,9 @@ Iterative *procedure*: do not calls itself;
 Recursive *procedure*: directly or indirectly calls itself (syntactic wise);
 Iterative *process*: its state can be summarized by a fixed number of variables + a rule for changing the state (and optionally + and "end" test condition);
 Recursive *process*: Opposite of above. It keeps track of "hidden" chained information to be computed later on.
+
+### Tree Recursion 
+
+> In general, the number of steps required by a tree-recursive process will be proportional to the number of nodes in the tree, while the space required will
+be proportional to the maximum depth of the tree.
+
