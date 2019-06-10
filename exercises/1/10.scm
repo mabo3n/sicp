@@ -1,0 +1,152 @@
+; Exercise 1.10: The following procedure computes a mathematical 
+; function called Ackermann’s function.
+
+(define (A x y)
+  (cond ((= y 0) 0)
+        ((= x 0) (* 2 y))
+        ((= y 1) 2)
+        (else (A (- x 1) (A x (- y 1))))))
+
+; What are the values of the following expressions?
+
+(A 1 10)
+(A 2 4)
+(A 3 3)
+
+; Consider the following procedures, where A is the procedure 
+; defined above:
+
+(define (f n) (A 0 n))
+(define (g n) (A 1 n))
+(define (h n) (A 2 n))
+(define (k n) (* 5 n n))
+
+; Give concise mathematical definitions for the functions 
+; computed by the procedures f, g, and h for positive integer 
+; values of n. For example, (k n) computes 5n**2
+
+; -----------------------------------------------------------
+
+(define (A x y)
+  (cond ((= y 0) 0)
+        ((= x 0) (* 2 y))
+        ((= y 1) 2)
+        (else (A (- x 1) (A x (- y 1))))))
+
+(A 1 10)
+(A (- x 1) (A x (- y 1)))
+(A (- 1 1) (A 1 (- 10 1)))
+(A 0       (A 1 9))
+(A 0       (A (- 1 1) (A 1 (- 9 1))))
+(A 0       (A 0       (A 1 8)))
+(A 0       (A 0       (A (- 1 1) (A 1 (- 8 1)))))
+(A 0       (A 0       (A 0       (A 1 7))))
+(A 0       (A 0       (A 0       (A (- 1 1) (A 1 (- 7 1))))))
+;                                        ... (A (- 1 1) (A 1 (- 2 1)))
+;                                        ... (A 0       2)
+;                                        ... (* 2 2)
+;                                   ... (A 0 4)
+;                              ... (A 0 (* 2 4))
+;                              ... (A 0 8)
+;                         ... (A 0 (* 2 8))
+; This is 2**y
+(1024)
+
+(define (A x y)
+  (cond ((= y 0) 0)
+        ((= x 0) (* 2 y))
+        ((= y 1) 2)
+        (else (A (- x 1) (A x (- y 1))))))
+
+(A 2 4)
+(A (- x 1) (A x (- y 1)))
+(A (- 2 1) (A 2 (- 4 1)))
+(A 1       (A 2 3))
+(A 1       (A (- 2 1) (A 2 (- 3 1))))
+(A 1       (A 1       (A 2 2)))
+(A 1       (A 1       (A (- 2 1) (A 2 (- 2 1)))))
+(A 1       (A 1       (A 1       (A 2 1))))
+(A 1       (A 1       (A 1       2)))
+(A 1       (A 1       (A (- 1 1) (A 1 (- 2 1)))))
+(A 1       (A 1       (A 0       (A 1 1))))
+(A 1       (A 1       (A 0       2)))
+(A 1       (A 1       (* 2 2)))
+; Everything again with x = 1
+(A 1       (A 1       4))
+(A 1       (A (- 1 1) (A 1 (- 4 1))))
+(A 1       (A 0       (A 1 3)))
+(A 1       (A 0       (A (- 1 1) (A 1 (- 3 1)))))
+(A 1       (A 0       (A 0       (A 1 2))))
+(A 1       (A 0       (A 0       (A (- 1 1) (A 1 (- 2 1))))))
+(A 1       (A 0       (A 0       (A 0       (A 1 1)))))
+(A 1       (A 0       (A 0       (A 0       2))))
+(A 1       (A 0       (A 0       (* 2 2))))
+(A 1       (A 0       (A 0       4)))
+(A 1       (A 0       (* 2 4)))
+(A 1       (A 0       8))
+(A 1       (* 2 8))
+(A 1       16)
+; This will be 2**16
+(65536)
+; Seems like the function is 2**(y**x)
+
+(define (A x y)
+  (cond ((= y 0) 0)
+        ((= x 0) (* 2 y))
+        ((= y 1) 2)
+        (else (A (- x 1) (A x (- y 1))))))
+
+(A 3 3)
+(A (- x 1) (A x (- y 1)))
+(A (- 3 1) (A 3 (- 3 1)))
+(A 2       (A 3 2))
+(A 2       (A (- 3 1) (A 3 (- 2 1))))
+(A 2       (A 2       (A 3 1)))
+(A 2       (A 2       2))
+(A 2       (A (- 2 1) (A 2 (- 2 1))))
+(A 2       (A 1       (A 2 1)))
+(A 2       (A 1       2))
+(A 2       (A (- 1 1) (A 1 (- 2 1))))
+(A 2       (A 0       (A 1 1)))
+(A 2       (A 0       2))
+(A 2       (* 2 2))
+(A 2       4)
+; This will result the same as the previous expression:
+(65536)
+; but 2**(4**2) != 2**(3**3) so my guess f(x,y) = 2**(y**x) is wrong.
+
+; Looking at the start of our first substitution hierarchy again, 
+; we can see that:
+
+(A 1 10) ; this
+(A (- x 1) (A x (- y 1)))
+(A (- 1 1) (A 1 (- 10 1)))
+(A 0       (A 1 9)) ; is equal to this
+(A 0       (A (- 1 1) (A 1 (- 9 1))))
+(A 0       (A 0       (A 1 8))) ; and also this
+
+; So (A 1 10) = (A 0 (A 1 9)) = (A 0 (A 0 (A 1 8))) 
+; Also, according to the procedure conditional, whenever
+; it is called with x = 0, it will return 2 * y.
+; So (A 1 10) = (* 2 (A 1 9)) = (* 2 (* 2 (A 1 8))) 
+; When y goes down to 1 it will return 2, 
+; So (A 1 x) = 2**x
+
+; On the others substitution hierarchies we can see that
+; (A 3 3) becomes (A 2 (A 1 2)) and then (A 2 4)
+; (A 2 4) becomes (A 1 (A 1 4)) and then (A 1 16), which is 2**16
+
+; If (A 1 x) = 2**x, then (A 1 (A 1 x)) = 2**(2**x)
+; If (A 2 x) = (A 1 (A 1 x)), then (A 2 x) = 2**(2**x)
+; 
+; If (A 1 x) = 2**x, (A 2 x) = 2**(2**x), ...
+
+; I give up. Wasn't able to figure out the whole formula.
+
+(define (f n) (A 0 n)) ; 2n
+(define (g n) (A 1 n)) ; 2**n
+(define (h n) (A 2 n)) ; 2**(2**n)
+(define (k n) (* 5 n n)) ; 5n**2
+
+
+
